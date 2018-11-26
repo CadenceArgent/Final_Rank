@@ -21,6 +21,8 @@ GameObject:
   - component: {fileID: 4210294771192786}
   - component: {fileID: 33155266971166642}
   - component: {fileID: 23082156277029288}
+  - component: {fileID: 64538499338872206}
+  - component: {fileID: 114073798531729010}
   m_Layer: 0
   m_Name: Pawn
   m_TagString: Untagged
@@ -84,3 +86,29 @@ MeshFilter:
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 1821618365595254}
   m_Mesh: {fileID: 4300010, guid: 3d8349550b533e04fa500cc21ecf279e, type: 3}
+--- !u!64 &64538499338872206
+MeshCollider:
+  m_ObjectHideFlags: 1
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1821618365595254}
+  m_Material: {fileID: 0}
+  m_IsTrigger: 0
+  m_Enabled: 1
+  serializedVersion: 3
+  m_Convex: 1
+  m_CookingOptions: 14
+  m_SkinWidth: 0.01
+  m_Mesh: {fileID: 4300010, guid: 3d8349550b533e04fa500cc21ecf279e, type: 3}
+--- !u!114 &114073798531729010
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1821618365595254}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 723d2bb23ceb54748b08affc3777bde5, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  Color: 0

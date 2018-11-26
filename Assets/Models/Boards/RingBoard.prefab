@@ -8875,7 +8875,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 341049209706ca54c94102fcd52e3048, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  Tiles: []
   PrefabWhite: {fileID: 0}
   PrefabBlack: {fileID: 0}
   PrefabSlowWhite: {fileID: 0}
