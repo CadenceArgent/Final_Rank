@@ -25,4 +25,24 @@ public class Board : MonoBehaviour
 
     }
     #endregion
+
+    #region Methods
+    public Tile GetTileByPos(Vector2 position)
+    {
+        return Current.Tiles.Any(e => e.Position == position) ? Current.Tiles.Single(e => e.Position == position) : null;
+    }
+
+    public List<Piece> GetPiecesByColor(PieceColor color)
+    {
+        List<Piece> ret = new List<Piece>();
+        foreach (Tile element in Current.Tiles)
+        {
+            if (element.ContainedPiece.Color == color)
+            {
+                ret.Add(element.ContainedPiece);
+            }
+        }
+        return ret;
+    }
+    #endregion
 }

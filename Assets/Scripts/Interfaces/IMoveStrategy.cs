@@ -1,8 +1,7 @@
-﻿using System.Collections;
+﻿using UnityEngine;
 using System.Collections.Generic;
-using UnityEngine;
 
 public interface IMoveStrategy
 {
-    bool CanMove();
+    List<Vector2> GetAvailableTiles(Vector2 Origin);
 }

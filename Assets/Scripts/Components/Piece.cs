@@ -4,6 +4,7 @@ using System.Linq;
 using UnityEngine;
 using static PieceColor;
 using static Player;
+using static Board;
 
 public class Piece : MonoBehaviour
 {
@@ -12,7 +13,7 @@ public class Piece : MonoBehaviour
     public Vector2 Position
     {
         get { return GetComponentInParent<Tile>().Position; }
-        set { transform.SetParent(Board.Current.Tiles.Single(element => element.Position == value).transform); }
+        set { transform.SetParent(Current.Tiles.Single(element => element.Position == value).transform); }
     }
     public PieceColor Color;
     public IMoveStrategy MovementType;
@@ -28,7 +29,11 @@ public class Piece : MonoBehaviour
     #region Unity Methods
     private void Start()
     {
-
+        MovementType = new PawnMoveStrategy();
+        foreach (Vector2 element in MovementType.GetAvailableTiles(new Vector2(0, 0)))
+        {
+            Debug.Log(element);
+        }
     }
 
     private void Update()
