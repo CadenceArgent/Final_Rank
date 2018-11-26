@@ -12,6 +12,6 @@ public class Player
 
     private Player()
     {
-        ControlledColor = White;
+        ControlledColor = Black;
     }
 }

@@ -29,11 +29,7 @@ public class Piece : MonoBehaviour
     #region Unity Methods
     private void Start()
     {
-        MovementType = new PawnMoveStrategy();
-        foreach (Vector2 element in MovementType.GetAvailableTiles(new Vector2(0, 0)))
-        {
-            Debug.Log(element);
-        }
+        
     }
 
     private void Update()
@@ -43,11 +39,16 @@ public class Piece : MonoBehaviour
 
     private void OnMouseDown()
     {
-        if (Color == LocalPlayer.ControlledColor && Color != None)
+        if (Color != None && Color == LocalPlayer.ControlledColor)
         {
             SelectedPiece = SelectedPiece == this ? null : this;
             Debug.Log(SelectedPiece?.name);
         }
+    }
+
+    public List<Vector2> GetReachableTiles()
+    {
+        return MovementType.GetAvailableTiles(GetComponentInParent<Tile>().Position);
     }
     #endregion
 

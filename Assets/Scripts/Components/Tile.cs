@@ -10,4 +10,14 @@ public class Tile : MonoBehaviour
     public bool IsEmpty { get { return GetComponentInChildren<Piece>() == null; } }
     public Piece ContainedPiece { get { return GetComponentInChildren<Piece>(); } }
     #endregion
+
+    #region Unity Methods
+    private void Update()
+    {
+        if (Input.GetKeyDown(KeyCode.A))
+        {
+            Debug.Log(this.Position);
+        }
+    }
+    #endregion
 }

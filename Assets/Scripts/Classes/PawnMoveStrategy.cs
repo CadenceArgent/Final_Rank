@@ -12,34 +12,27 @@ public class PawnMoveStrategy : IMoveStrategy
     public List<Vector2> GetAvailableTiles(Vector2 Origin)
     {
         List<Vector2> ret = new List<Vector2>();
-        switch (LocalPlayer.ControlledColor)
+        int multiplier = LocalPlayer.ControlledColor == White ? 1 : -1;
+        Vector2 Destination = Origin + new Vector2(1 * multiplier, 0);
+        if (Current.GetTileByPos(Destination).ContainedPiece == null)
         {
-            case Black:
-                if (Current.GetTileByPos(Origin + new Vector2(-1, 0)).ContainedPiece == null)
-                {
-                    ret.Add(Origin + new Vector2(-1, 0));
-                }
-                if (!HasMoved && Current.GetTileByPos(Origin + new Vector2(-2, 0)).ContainedPiece == null)
-                {
-                    ret.Add(Origin + new Vector2(-2, 0));
-                }
-                break;
-            case White:
-                if (Current.GetTileByPos(Origin + new Vector2(-1, 0)).ContainedPiece == null)
-                {
-                    ret.Add(Origin + new Vector2(-1, 0));
-                }
-                if (!HasMoved && Current.GetTileByPos(Origin + new Vector2(-2, 0)).ContainedPiece == null)
-                {
-                    ret.Add(Origin + new Vector2(-2, 0));
-                }
-                break;
+            ret.Add(Destination);
+            Destination = Origin + new Vector2(2 * multiplier, 0);
+            if (!HasMoved && Current.GetTileByPos(Destination).ContainedPiece == null)
+            {
+                ret.Add(Destination);
+            }
+        }
+        Destination = Origin + new Vector2(1 * multiplier, 1);
+        if (Current.GetTileByPos(Destination)?.ContainedPiece != null && Current.GetTileByPos(Destination).ContainedPiece.Color != LocalPlayer.ControlledColor)
+        {
+            ret.Add(Destination);
+        }
+        Destination = Origin + new Vector2(1 * multiplier, -1);
+        if (Current.GetTileByPos(Destination)?.ContainedPiece != null && Current.GetTileByPos(Destination).ContainedPiece.Color != LocalPlayer.ControlledColor)
+        {
+            ret.Add(Destination);
         }
         return ret;
-    }
-
-    private bool CanEat(Vector2 From, Vector2 To)
-    {
-        return true;
     }
 }
