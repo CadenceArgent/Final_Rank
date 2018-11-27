@@ -6,6 +6,7 @@ using UnityEngine;
 public class Tile : MonoBehaviour
 {
     #region Properties
+    public static GameObject HighLighter;
     public Vector2 Position;
     public bool IsSlow;
     public bool IsEmpty { get { return GetComponentInChildren<Piece>() == null; } }
@@ -15,18 +16,7 @@ public class Tile : MonoBehaviour
     #region Unity Methods
     private void Update()
     {
-        if (Input.GetKeyDown(KeyCode.A))
-        {
-            Highlight();
-        }
-    }
 
-    private void OnMouseDown()
-    {
-        if (GetComponentsInChildren<Component>().Length != 0)
-        {
-            Piece.SelectedPiece
-        }
     }
     #endregion
 

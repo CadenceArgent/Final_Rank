@@ -4,6 +4,7 @@ using UnityEngine;
 using static Board;
 using static PieceColor;
 using static Player;
+using static Piece;
 
 public class PawnMoveStrategy : IMoveStrategy
 {
@@ -34,5 +35,16 @@ public class PawnMoveStrategy : IMoveStrategy
             ret.Add(Destination);
         }
         return ret;
+    }
+
+    public void Move(Tile Destination)
+    {
+        if (SelectedPiece.CanMove(Destination.Position))
+        {
+            Object.Destroy(Destination.GetComponentInChildren<Piece>());
+            SelectedPiece.ContainingTile = Destination;
+            SelectedPiece = null;
+            HasMoved = true;
+        }
     }
 }

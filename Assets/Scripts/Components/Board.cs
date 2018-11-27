@@ -23,13 +23,12 @@ public class Board : MonoBehaviour
             GameObject generatedTile = Instantiate(TilePrefab, new Vector3(position.x, 0, position.y), Quaternion.identity, Current.transform);
             generatedTile.transform.Rotate(new Vector3(-90, 0, 0));
             generatedTile.GetComponent<Tile>().Position = position;
-            if (i / 8 == 5 || i / 8 == 6)
+            if (i / 8 == 1 || i / 8 == 6)
             {
-                GameObject generatedPiece = Instantiate(PawnPrefab, generatedTile.transform);
-                generatedPiece.transform.localPosition = new Vector3(-0.5f, 0.5f, 0);
-                generatedPiece.transform.localRotation = new Quaternion(0, 0, 0, 0);
+                GameObject generatedPiece = Instantiate(PawnPrefab);
+                generatedPiece.GetComponent<Piece>().ContainingTile = generatedTile.GetComponent<Tile>();
                 generatedPiece.GetComponent<Piece>().MovementType = new PawnMoveStrategy();
-                generatedPiece.GetComponent<Piece>().Color = i / 8 == 5 ? PieceColor.White : PieceColor.Black;
+                generatedPiece.GetComponent<Piece>().Color = i / 8 == 1 ? PieceColor.White : PieceColor.Black;
             }
             i++;
         }
@@ -37,10 +36,7 @@ public class Board : MonoBehaviour
 
     private void Update()
     {
-        if (Input.GetKeyDown(KeyCode.D))
-        {
-            Piece.SelectedPiece.GetReachableTiles().ForEach(e => Debug.Log(e));
-        }
+
     }
     #endregion
 
