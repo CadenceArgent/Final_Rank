@@ -4,7 +4,6 @@ using System.Linq;
 using UnityEngine;
 using static PieceColor;
 using static Player;
-using static Board;
 
 public class Piece : MonoBehaviour
 {
@@ -13,49 +12,46 @@ public class Piece : MonoBehaviour
     public Vector2 Position
     {
         get { return GetComponentInParent<Tile>().Position; }
-        set { transform.SetParent(Current.Tiles.Single(element => element.Position == value).transform); }
+        set { transform.SetParent(Board.Current.Tiles.Single(element => element.Position == value).transform); }
     }
-    public PieceColor Color;
+    public PieceColor Color
+    {
+        get { return _color; }
+        set
+        {
+            _color = value;
+            GetComponent<MeshRenderer>().materials.ToList().ForEach(material => material.color = value == White ? UnityEngine.Color.white : UnityEngine.Color.black);
+        }
+    }
     public IMoveStrategy MovementType;
     #endregion
 
     #region Fields
-    private List<Vector2> AvailableTiles
-    {
-        get { return null; }
-    }
+    private PieceColor _color;
     #endregion
 
     #region Unity Methods
-    private void Start()
-    {
-        
-    }
-
-    private void Update()
-    {
-
-    }
-
     private void OnMouseDown()
     {
         if (Color != None && Color == LocalPlayer.ControlledColor)
         {
             SelectedPiece = SelectedPiece == this ? null : this;
-            Debug.Log(SelectedPiece?.name);
+            foreach (GameObject element in GameObject.FindGameObjectsWithTag(Tags.highlight.ToString()))
+            {
+                if (element.name != "highlighter")
+                {
+                    Destroy(element);
+                }
+            }
+            foreach (Vector2 AvailableTile in SelectedPiece?.GetReachableTiles() ?? new List<Vector2>())
+            {
+                Board.Current.GetTileByPos(AvailableTile).Highlight();
+            }
         }
-    }
-
-    public List<Vector2> GetReachableTiles()
-    {
-        return MovementType.GetAvailableTiles(GetComponentInParent<Tile>().Position);
     }
     #endregion
 
     #region Methods
-    public bool CanMove(Vector2 Destination)
-    {
-        return AvailableTiles.Contains(Destination);
-    }
+    public List<Vector2> GetReachableTiles() => MovementType.GetAvailableTiles(GetComponentInParent<Tile>().Position);
     #endregion
 }

@@ -7,7 +7,7 @@ using static Player;
 
 public class PawnMoveStrategy : IMoveStrategy
 {
-    private bool HasMoved = true;
+    private bool HasMoved = false;
 
     public List<Vector2> GetAvailableTiles(Vector2 Origin)
     {
