@@ -6,7 +6,6 @@ using UnityEngine;
 public class Tile : MonoBehaviour
 {
     #region Properties
-    public static GameObject HighLighter;
     public Vector2 Position;
     public bool IsSlow;
     public bool IsEmpty { get { return GetComponentInChildren<Piece>() == null; } }

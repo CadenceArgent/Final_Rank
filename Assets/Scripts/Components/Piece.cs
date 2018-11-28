@@ -21,11 +21,7 @@ public class Piece : MonoBehaviour
             }
         }
     }
-    public Vector2 Position
-    {
-        get { return GetComponentInParent<Tile>().Position; }
-        set { transform.SetParent(Board.Current.Tiles.Single(element => element.Position == value).transform); }
-    }
+
     public Tile ContainingTile
     {
         get { return transform.parent.GetComponent<Tile>(); }
@@ -46,7 +42,11 @@ public class Piece : MonoBehaviour
             GetComponent<MeshRenderer>().materials.ToList().ForEach(material => material.color = value == White ? UnityEngine.Color.white : UnityEngine.Color.black);
         }
     }
-    public IMoveStrategy MovementType { private get; set; }
+
+    public IMoveStrategy MovementType
+    {
+        private get; set;
+    }
     #endregion
 
     #region Fields
@@ -55,6 +55,8 @@ public class Piece : MonoBehaviour
     #endregion
 
     #region Unity Methods
+    private void Start() => SetMoveStrategy();
+
     private void OnMouseDown()
     {
         if (Color != None && Color == LocalPlayer.ControlledColor && LocalPlayer.Active)
@@ -69,13 +71,42 @@ public class Piece : MonoBehaviour
     #endregion
 
     #region Methods
-    private List<Vector2> GetReachableTiles() => MovementType.GetAvailableTiles(GetComponentInParent<Tile>().Position);
+    private List<Vector2> GetReachableTiles() => MovementType.GetAvailableTiles(ContainingTile.Position);
 
     public bool CanMove(Vector2 Destination) => GetReachableTiles().Contains(Destination);
 
     public void Move(Tile Destination)
     {
-        MovementType.Move(Destination);
+        if (CanMove(Destination.Position))
+        {
+            if (Destination.GetComponentInChildren<Piece>() != null)
+            {
+                DestroyImmediate(Destination.GetComponentInChildren<Piece>().gameObject);
+            }
+            ContainingTile = Destination;
+            SelectedPiece = null;
+            MovementType.Move(Destination);
+            if (Board.Current.KingInCheck(LocalPlayer.ControlledColor == White ? Black : White))
+            {
+                Debug.Log($"{(LocalPlayer.ControlledColor == White ? Black : White)} player Checked");
+            }
+        }
+    }
+
+    public void SetMoveStrategy()
+    {
+        if (gameObject.name.Contains(PieceNames.Pawn.ToString()))
+            MovementType = new PawnMoveStrategy();
+        else if (gameObject.name.Contains(PieceNames.Bishop.ToString()))
+            MovementType = new BishopMoveStrategy();
+        else if (gameObject.name.Contains(PieceNames.Knight.ToString()))
+            MovementType = new KnightMoveStrategy();
+        else if (gameObject.name.Contains(PieceNames.Rook.ToString()))
+            MovementType = new RookMoveStrategy();
+        else if (gameObject.name.Contains(PieceNames.Queen.ToString()))
+            MovementType = new QueenMoveStrategy();
+        else if (gameObject.name.Contains(PieceNames.King.ToString()))
+            MovementType = new KingMoveStrategy();
     }
     #endregion
 }

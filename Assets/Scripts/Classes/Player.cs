@@ -17,8 +17,5 @@ public class Player
         ControlledColor = White;
     }
 
-    public void EndTurn()
-    {
-        Active = false;
-    }
+    public void EndTurn() => Active = false;
 }
