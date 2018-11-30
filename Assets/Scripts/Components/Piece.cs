@@ -42,20 +42,26 @@ public class Piece : MonoBehaviour
             GetComponent<MeshRenderer>().materials.ToList().ForEach(material => material.color = value == White ? UnityEngine.Color.white : UnityEngine.Color.black);
         }
     }
-
+    
     public IMoveStrategy MovementType
     {
-        private get; set;
+        private get { return _movementType; }
+        set { _movementType = value; }
     }
     #endregion
 
     #region Fields
+    [SerializeField]
+    [HideInInspector]
     private PieceColor _color;
+    [SerializeField]
+    [HideInInspector]
+    private IMoveStrategy _movementType;
     private static Piece _selectedPiece;
     #endregion
 
     #region Unity Methods
-    private void Start() => SetMoveStrategy();
+    private void Awake() => SetMoveStrategy();
 
     private void OnMouseDown()
     {
@@ -71,9 +77,11 @@ public class Piece : MonoBehaviour
     #endregion
 
     #region Methods
-    private List<Vector2> GetReachableTiles() => MovementType.GetAvailableTiles(ContainingTile.Position);
+    private List<Vector2> GetReachableTiles() => MovementType.GetAvailableTiles(ContainingTile.Position, Color);
 
     public bool CanMove(Vector2 Destination) => GetReachableTiles().Contains(Destination);
+
+    public bool UnsafeCanMove(Vector2 Destination) => MovementType.UnsafeGetAvailableTiles(ContainingTile.Position, Color).Contains(Destination);
 
     public void Move(Tile Destination)
     {
@@ -86,8 +94,9 @@ public class Piece : MonoBehaviour
             ContainingTile = Destination;
             SelectedPiece = null;
             MovementType.Move(Destination);
-            if (Board.Current.KingInCheck(LocalPlayer.ControlledColor == White ? Black : White))
+            if (Board.Current.KingInCheck(Color == White ? Black : White))
             {
+                //here is the code that happens where a player is checked
                 Debug.Log($"{(LocalPlayer.ControlledColor == White ? Black : White)} player Checked");
             }
         }

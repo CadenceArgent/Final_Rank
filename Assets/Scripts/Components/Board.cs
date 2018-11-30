@@ -7,8 +7,9 @@ using static PieceColor;
 public class Board : MonoBehaviour
 {
     #region Properties
-    public static Board Current { get { return GameObject.Find("CurrentBoard").GetComponent<Board>(); } }
-    public List<Tile> Tiles { get { return Current.GetComponentsInChildren<Tile>().ToList(); } }
+    public static bool Generated = false;
+    public static Board Current { get { return GameObject.Find(ListVector2Extensions.TempBoardHere ? "CurrentBoard(Clone)" : "CurrentBoard").GetComponent<Board>(); } }
+    public List<Tile> Tiles { get { return GetComponentsInChildren<Tile>().ToList(); } }
     public Piece WhiteKing { get { return WhitePieces.Single(piece => piece.gameObject.name.Contains(PieceNames.King.ToString())); } }
     public Piece BlackKing { get { return BlackPieces.Single(piece => piece.gameObject.name.Contains(PieceNames.King.ToString())); } }
     public List<Piece> WhitePieces
@@ -27,9 +28,15 @@ public class Board : MonoBehaviour
         get
         {
             List<Piece> ret = new List<Piece>();
+            int i = 0;
             foreach (Tile tile in Tiles)
+            {
                 if (tile.ContainedPiece != null && tile.ContainedPiece.Color == Black)
+                {
+                    i++;
                     ret.Add(tile.ContainedPiece);
+                }
+            }
             return ret;
         }
     }
@@ -46,6 +53,10 @@ public class Board : MonoBehaviour
     #region Unity Methods
     private void Start()
     {
+        if (Generated)
+        {
+            return;
+        }
         List<int> Bishops = new List<int>() { 2, 5, 58, 61 };
         List<int> Queens = new List<int>() { 4, 60 };
         List<int> Kings = new List<int>() { 3, 59 };
@@ -96,19 +107,35 @@ public class Board : MonoBehaviour
                 generatedPiece.GetComponent<Piece>().Color = Kings.IndexOf(i) < Kings.Count / 2 ? White : Black;
             }
             i++;
+            Generated = true;
         }
     }
     #endregion
 
     #region Methods
-    public Tile GetTileByPos(Vector2 position) => Current.Tiles.Any(e => e.Position == position) ? Current.Tiles.Single(e => e.Position == position) : null;
+    public Tile GetTileByPos(Vector2 position) => Tiles.SingleOrDefault(e => e.Position == position);
 
     public bool KingInCheck(PieceColor KingColor)
     {
         if (KingColor == None)
             return false;
+        else if (KingColor == White)
+        {
+            foreach (Piece piece in BlackPieces)
+            {
+                if (piece.UnsafeCanMove(WhiteKing.ContainingTile.Position))
+                    return true;
+            }
+        }
         else
-            return KingColor == White ? BlackPieces.Any(piece => piece.CanMove(WhiteKing.ContainingTile.Position)) : WhitePieces.Any(piece => piece.CanMove(BlackKing.ContainingTile.Position));
+        {
+            foreach (Piece piece in WhitePieces)
+            {
+                if (piece.UnsafeCanMove(BlackKing.ContainingTile.Position))
+                    return true;
+            }
+        }
+        return false;
     }
     #endregion
 }
