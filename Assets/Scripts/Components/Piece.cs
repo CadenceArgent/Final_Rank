@@ -42,10 +42,10 @@ public class Piece : MonoBehaviour
             GetComponent<MeshRenderer>().materials.ToList().ForEach(material => material.color = value == White ? UnityEngine.Color.white : UnityEngine.Color.black);
         }
     }
-    
+
     public IMoveStrategy MovementType
     {
-        private get { return _movementType; }
+        get { return _movementType; }
         set { _movementType = value; }
     }
     #endregion
@@ -91,31 +91,51 @@ public class Piece : MonoBehaviour
             {
                 DestroyImmediate(Destination.GetComponentInChildren<Piece>().gameObject);
             }
+            Vector2 previousPosition = ContainingTile.Position;
             ContainingTile = Destination;
             SelectedPiece = null;
-            MovementType.Move(Destination);
+            MovementType.Move(previousPosition, Destination.Position, Color);
             if (Board.Current.KingInCheck(Color == White ? Black : White))
             {
-                //here is the code that happens where a player is checked
-                Debug.Log($"{(LocalPlayer.ControlledColor == White ? Black : White)} player Checked");
+                //here is the code that happens when a player is checked
+                Debug.Log($"{(Color == White ? Black : White)} player Checked");
+                switch (Color)
+                {
+                    case Black:
+                        WhitePlayer.CheckedOnce = true;
+                        break;
+                    case White:
+                        BlackPlayer.CheckedOnce = true;
+                        break;
+                }
             }
         }
     }
 
     public void SetMoveStrategy()
     {
-        if (gameObject.name.Contains(PieceNames.Pawn.ToString()))
+        if (gameObject.name.Contains(PieceName.Pawn.ToString()))
             MovementType = new PawnMoveStrategy();
-        else if (gameObject.name.Contains(PieceNames.Bishop.ToString()))
+        else if (gameObject.name.Contains(PieceName.Bishop.ToString()))
             MovementType = new BishopMoveStrategy();
-        else if (gameObject.name.Contains(PieceNames.Knight.ToString()))
+        else if (gameObject.name.Contains(PieceName.Knight.ToString()))
             MovementType = new KnightMoveStrategy();
-        else if (gameObject.name.Contains(PieceNames.Rook.ToString()))
+        else if (gameObject.name.Contains(PieceName.Rook.ToString()))
             MovementType = new RookMoveStrategy();
-        else if (gameObject.name.Contains(PieceNames.Queen.ToString()))
+        else if (gameObject.name.Contains(PieceName.Queen.ToString()))
             MovementType = new QueenMoveStrategy();
-        else if (gameObject.name.Contains(PieceNames.King.ToString()))
+        else if (gameObject.name.Contains(PieceName.King.ToString()))
             MovementType = new KingMoveStrategy();
+    }
+
+    public PieceName GetPieceName()
+    {
+        List<PieceName> AllNames = new List<PieceName>();
+        foreach (PieceName element in typeof(PieceName).GetEnumValues())
+        {
+            AllNames.Add(element);
+        }
+        return AllNames.SingleOrDefault(e => gameObject.name.Contains(e.ToString()));
     }
     #endregion
 }

@@ -12,9 +12,7 @@ public class QueenMoveStrategy : IMoveStrategy
         return new RookMoveStrategy().GetAvailableTiles(Origin, MovingColor).Concat(new BishopMoveStrategy().GetAvailableTiles(Origin, MovingColor)).ToList();
     }
 
-    public void Move(Tile Destination)
-    {
-    }
+    public void Move(Vector2 Origin, Vector2 Destination, PieceColor MovingColor) { }
 
     public List<Vector2> UnsafeGetAvailableTiles(Vector2 Origin, PieceColor MovingColor)
     {

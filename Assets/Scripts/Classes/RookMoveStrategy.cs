@@ -6,7 +6,12 @@ using static Player;
 
 public class RookMoveStrategy : IMoveStrategy
 {
-    public bool CanCastle = true;
+    public bool CanCastle;
+
+    public RookMoveStrategy(bool canCastle = true)
+    {
+        canCastle = CanCastle;
+    }
 
     #region IMoveStrategy
     public List<Vector2> GetAvailableTiles(Vector2 Origin, PieceColor MovingColor)
@@ -23,7 +28,7 @@ public class RookMoveStrategy : IMoveStrategy
         return ret;
     }
 
-    public void Move(Tile Destination) => CanCastle = false;
+    public void Move(Vector2 Origin, Vector2 Destination, PieceColor MovingColor) => CanCastle = false;
 
     public List<Vector2> UnsafeGetAvailableTiles(Vector2 Origin, PieceColor MovingColor)
     {
