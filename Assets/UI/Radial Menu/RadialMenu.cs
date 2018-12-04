@@ -19,7 +19,7 @@ public class RadialMenu : MonoBehaviour {
 	// Use this for initialization
 	void Start () {
 		menuItems = buttons.Count;
-		fillPercent = 360 / buttons.Count;
+		fillPercent = (360 / buttons.Count) / 360;
 		foreach (MenuButton button in buttons) {
 			button.sceneimage.color = button.NormalColor;
 		}
@@ -61,10 +61,12 @@ public class RadialMenu : MonoBehaviour {
 }
 
 [System.Serializable]
-public class MenuButton{
+public class MenuButton : System.Object{
 	public string name;
 	public Image sceneimage;
 	public Color NormalColor = Color.white;
 	public Color HighlightedColor = Color.grey;
 	public Color PressedColor = Color.cyan;
+
+
 }
