@@ -2,7 +2,6 @@
 using System.Collections.Generic;
 using System.IO;
 using UnityEngine;
-using static UnityEngine.Debug;
 
 public static class ListVector2Extensions
 {

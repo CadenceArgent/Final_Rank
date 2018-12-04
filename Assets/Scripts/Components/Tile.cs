@@ -2,12 +2,13 @@
 using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
+using static TyleType;
 
 public class Tile : MonoBehaviour
 {
     #region Properties
     public Vector2 Position;
-    public bool IsSlow;
+    public TyleType Type;
     public bool IsEmpty { get { return GetComponentInChildren<Piece>() == null; } }
     public Piece ContainedPiece { get { return GetComponentInChildren<Piece>(); } }
     #endregion

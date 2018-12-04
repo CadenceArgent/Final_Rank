@@ -1,9 +1,9 @@
-﻿public enum PieceNames
+﻿public enum PieceName
 {
-    Pawn,
-    Bishop,
-    Queen,
-    King,
-    Rook,
-    Knight
+    Pawn = 0,
+    Bishop = 3,
+    Queen = 4,
+    King = 5,
+    Rook = 1,
+    Knight = 2
 }

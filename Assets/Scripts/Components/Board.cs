@@ -1,17 +1,23 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
+using System.Text;
 using UnityEngine;
 using static PieceColor;
 
 public class Board : MonoBehaviour
 {
     #region Properties
+    [System.Obsolete]
+    public static GUIElement PromotionUI;
     public static bool Generated = false;
+    public int Colums { get; private set; }
+    public int Rows { get; private set; }
     public static Board Current { get { return GameObject.Find(ListVector2Extensions.TempBoardHere ? "CurrentBoard(Clone)" : "CurrentBoard").GetComponent<Board>(); } }
     public List<Tile> Tiles { get { return GetComponentsInChildren<Tile>().ToList(); } }
-    public Piece WhiteKing { get { return WhitePieces.Single(piece => piece.gameObject.name.Contains(PieceNames.King.ToString())); } }
-    public Piece BlackKing { get { return BlackPieces.Single(piece => piece.gameObject.name.Contains(PieceNames.King.ToString())); } }
+    public Piece WhiteKing { get { return WhitePieces.Single(piece => piece.gameObject.name.Contains(PieceName.King.ToString())); } }
+    public Piece BlackKing { get { return BlackPieces.Single(piece => piece.gameObject.name.Contains(PieceName.King.ToString())); } }
     public List<Piece> WhitePieces
     {
         get
@@ -23,6 +29,7 @@ public class Board : MonoBehaviour
             return ret;
         }
     }
+
     public List<Piece> BlackPieces
     {
         get
@@ -136,6 +143,57 @@ public class Board : MonoBehaviour
             }
         }
         return false;
+    }
+
+    public void Save(string name)
+    {
+        const string extension = ".brd";
+        if (!Directory.Exists("Boards"))
+            Directory.CreateDirectory("Boards");
+        string path = $@"Boards\{name}{extension}";
+        if (File.Exists(path))
+        {
+            if (false)
+            {
+                //if he wants to replace the previous file that had the name
+            }
+            else
+            {
+                int i = 0;
+                do
+                {
+                    path = $@"Boards\{name}{i}{extension}";
+                    i++;
+                }
+                while (File.Exists(path));
+            }
+        }
+        File.Create(path);
+        Dictionary<string, string> BoardDescription = new Dictionary<string, string>
+        {
+            { "Columns" , Colums.ToString() },
+            { "Rows", Rows.ToString() },
+            { "Tiles", BuildTilesString() },
+            { "WhitePieces", BuildPiecesString(White) },
+            { "BlackPieces", BuildPiecesString(Black) }
+            //think about adding a property to tell what color is promoted on tile.cs
+        };
+    }
+
+    private string BuildTilesString()
+    {
+        StringBuilder builder = new StringBuilder();
+        foreach (Tile tile in Tiles)
+            builder.Append($"{tile.Position.x},{tile.Position.y}#{(int)tile.Type};");
+        return builder.ToString();
+    }
+
+    private string BuildPiecesString(PieceColor color)
+    {
+        StringBuilder builder = new StringBuilder();
+        foreach (Piece piece in color == White ? WhitePieces : BlackPieces)
+            builder.Append($"{piece.ContainingTile.Position.x},{piece.ContainingTile.Position.y}#{(int)piece.GetPieceName()}#{(int)color};");
+        return builder.ToString();
     }
     #endregion
 }

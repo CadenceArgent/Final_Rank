@@ -5,9 +5,13 @@ using static PieceColor;
 
 public class Player
 {
-    public static Player LocalPlayer { get; set; } = new Player();
+    public bool CheckedOnce = false;
+    public static Player LocalPlayer = new Player();
     public static Player RemotePlayer = new Player();
     public static Player ActivePlayer { get { return LocalPlayer.Active ? LocalPlayer : RemotePlayer; } }
+
+    public static Player WhitePlayer { get { return LocalPlayer.ControlledColor == White ? LocalPlayer : RemotePlayer; } }
+    public static Player BlackPlayer { get { return LocalPlayer.ControlledColor == Black ? LocalPlayer : RemotePlayer; } }
     public PieceColor ControlledColor { get; private set; }
     public string Name;
     public bool Active;
@@ -19,4 +23,6 @@ public class Player
     }
 
     public void EndTurn() => Active = false;
+
+    public void BeginTurn() => Active = true;
 }

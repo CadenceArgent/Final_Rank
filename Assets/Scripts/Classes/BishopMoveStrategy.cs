@@ -16,21 +16,19 @@ public class BishopMoveStrategy : IMoveStrategy
             ret.AddIfNotChecking(element, Origin, MovingColor);
         foreach (Vector2 element in DiagonalMove(Origin, new Vector2(1, -1), MovingColor))
             ret.AddIfNotChecking(element, Origin, MovingColor);
-        foreach (Vector2 element in DiagonalMove(Origin, new Vector2(-1, -1),MovingColor))
+        foreach (Vector2 element in DiagonalMove(Origin, new Vector2(-1, -1), MovingColor))
             ret.AddIfNotChecking(element, Origin, MovingColor);
         return ret;
     }
 
-    public void Move(Tile Destination)
-    {
-    }
+    public void Move(Vector2 Origin, Vector2 Destination, PieceColor MovingColor) { }
 
     public List<Vector2> UnsafeGetAvailableTiles(Vector2 Origin, PieceColor MovingColor)
     {
         List<Vector2> ret = new List<Vector2>();
-        foreach (Vector2 element in DiagonalMove(Origin, new Vector2(1, 1),MovingColor))
+        foreach (Vector2 element in DiagonalMove(Origin, new Vector2(1, 1), MovingColor))
             ret.Add(element);
-        foreach (Vector2 element in DiagonalMove(Origin, new Vector2(-1, 1),MovingColor))
+        foreach (Vector2 element in DiagonalMove(Origin, new Vector2(-1, 1), MovingColor))
             ret.Add(element);
         foreach (Vector2 element in DiagonalMove(Origin, new Vector2(1, -1), MovingColor))
             ret.Add(element);
@@ -40,7 +38,7 @@ public class BishopMoveStrategy : IMoveStrategy
     }
     #endregion
 
-    private IEnumerable<Vector2> DiagonalMove(Vector2 Origin, Vector2 CornerDirection,PieceColor MovingColor)
+    private IEnumerable<Vector2> DiagonalMove(Vector2 Origin, Vector2 CornerDirection, PieceColor MovingColor)
     {
         Tile currentTile;
         while ((currentTile = Board.Current.GetTileByPos(Origin + CornerDirection)) != null && currentTile.ContainedPiece == null)

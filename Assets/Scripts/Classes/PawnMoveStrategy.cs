@@ -38,7 +38,15 @@ public class PawnMoveStrategy : IMoveStrategy
         return ret;
     }
 
-    public void Move(Tile Destination) => HasMoved = true;
+    public void Move(Vector2 Origin, Vector2 Destination, PieceColor MovingColor)
+    {
+        if (!ListVector2Extensions.TempBoardHere && ((Destination.x == 7 && MovingColor == White) || (Destination.x == 0 && MovingColor == Black)))
+        {
+            PromotionUI.enabled = true;
+            SelectedPiece = Current.GetTileByPos(Destination).ContainedPiece;
+        }
+        HasMoved = true;
+    }
 
     public List<Vector2> UnsafeGetAvailableTiles(Vector2 Origin, PieceColor MovingColor)
     {
