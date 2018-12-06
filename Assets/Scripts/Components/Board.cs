@@ -10,7 +10,7 @@ public class Board : MonoBehaviour
 {
     #region Properties
     [System.Obsolete]
-    public static GUIElement PromotionUI;
+    public GameObject PromotionUI;
     public static bool Generated = false;
     public int Colums { get; private set; }
     public int Rows { get; private set; }
@@ -47,6 +47,11 @@ public class Board : MonoBehaviour
             return ret;
         }
     }
+    
+    public Piece PromotingPiece;
+    #endregion
+
+    #region Inspector
     public GameObject TilePrefab;
     public GameObject TilePrefabSlow;
     public GameObject PawnPrefab;
@@ -145,6 +150,31 @@ public class Board : MonoBehaviour
         return false;
     }
 
+    public void Promote(PieceName NewName)
+    {
+        Piece NewPiece = null;
+        switch (NewName)
+        {
+            case PieceName.Bishop:
+                NewPiece = Instantiate(BishopPrefab).GetComponent<Piece>();
+                break;
+            case PieceName.Queen:
+                NewPiece = Instantiate(QueenPrefab).GetComponent<Piece>();
+                break;
+            case PieceName.Rook:
+                NewPiece = Instantiate(RookPrefab).GetComponent<Piece>();
+                break;
+            case PieceName.Knight:
+                NewPiece = Instantiate(KnightPrefab).GetComponent<Piece>();
+                break;
+        }
+        NewPiece.ContainingTile = PromotingPiece.ContainingTile;
+        DestroyImmediate(PromotingPiece.gameObject);
+        PromotingPiece = null;
+    }
+    #endregion
+
+    #region Temp test
     public void Save(string name)
     {
         const string extension = ".brd";
@@ -195,5 +225,5 @@ public class Board : MonoBehaviour
             builder.Append($"{piece.ContainingTile.Position.x},{piece.ContainingTile.Position.y}#{(int)piece.GetPieceName()}#{(int)color};");
         return builder.ToString();
     }
-    #endregion
+#endregion
 }

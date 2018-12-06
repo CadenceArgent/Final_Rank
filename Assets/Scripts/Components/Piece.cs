@@ -98,7 +98,6 @@ public class Piece : MonoBehaviour
             if (Board.Current.KingInCheck(Color == White ? Black : White))
             {
                 //here is the code that happens when a player is checked
-                Debug.Log($"{(Color == White ? Black : White)} player Checked");
                 switch (Color)
                 {
                     case Black:
