@@ -645,7 +645,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!224 &1198294568
 RectTransform:
   m_ObjectHideFlags: 0
@@ -836,6 +836,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 341049209706ca54c94102fcd52e3048, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  PromotionUI: {fileID: 1198294567}
+  PromotingPiece: {fileID: 0}
   TilePrefab: {fileID: 1827708803958768, guid: 1a9af549eb686f64098333fe7ef3a43e, type: 2}
   TilePrefabSlow: {fileID: 0}
   PawnPrefab: {fileID: 1821618365595254, guid: 67daeb045396eb249ab99ee4f67b9f80, type: 2}

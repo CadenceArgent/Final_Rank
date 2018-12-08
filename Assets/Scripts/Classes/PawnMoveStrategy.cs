@@ -42,8 +42,8 @@ public class PawnMoveStrategy : IMoveStrategy
     {
         if (!ListVector2Extensions.TempBoardHere && ((Destination.x == 7 && MovingColor == White) || (Destination.x == 0 && MovingColor == Black)))
         {
-            PromotionUI.enabled = true;
-            SelectedPiece = Current.GetTileByPos(Destination).ContainedPiece;
+            Current.PromotionUI.SetActive(true);
+            Board.Current.PromotingPiece = Current.GetTileByPos(Destination).ContainedPiece;
         }
         HasMoved = true;
     }
