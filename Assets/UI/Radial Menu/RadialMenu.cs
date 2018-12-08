@@ -35,15 +35,20 @@ public class RadialMenu : MonoBehaviour {
 		}
 	}
 
+	public float angle;
+
 	public void GetCurrentMenuItem(){
 		Mouseposition = new Vector2 (Input.mousePosition.x, Input.mousePosition.y);
 
 		toVector2M = new Vector2 (Mouseposition.x / Screen.width, Mouseposition.y / Screen.height);
 
-		float angle = (Mathf.Atan2 (fromVector2M.y - centercircle.y, fromVector2M.x - centercircle.x) - Mathf.Atan2 (toVector2M.y - centercircle.y, toVector2M.x - centercircle.x)) * Mathf.Rad2Deg;
+		angle = ((Mathf.Atan2 (fromVector2M.y - centercircle.y, fromVector2M.x - centercircle.x) - Mathf.Atan2 (toVector2M.y - centercircle.y, toVector2M.x - centercircle.x)) * Mathf.Rad2Deg) + 90f;
 
 		if (angle < 0) {
 			angle += 360;
+		}
+		if (angle >= 360) {
+			angle -= 360;
 		}
 
 		curMenuItem = (int) (angle/(360/menuItems));
