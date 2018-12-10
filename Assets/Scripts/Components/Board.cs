@@ -47,7 +47,7 @@ public class Board : MonoBehaviour
             return ret;
         }
     }
-    
+    [HideInInspector]
     public Piece PromotingPiece;
     #endregion
 
