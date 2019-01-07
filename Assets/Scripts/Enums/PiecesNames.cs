@@ -1,5 +1,6 @@
 ﻿public enum PieceName
 {
+    Unknown = -1,
     Pawn = 0,
     Bishop = 3,
     Queen = 4,

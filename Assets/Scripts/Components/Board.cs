@@ -5,11 +5,12 @@ using System.Linq;
 using System.Text;
 using UnityEngine;
 using static PieceColor;
+using System;
 
 public class Board : MonoBehaviour
 {
     #region Properties
-    [System.Obsolete]
+    [Obsolete]
     public GameObject PromotionUI;
     public static bool Generated = false;
     public int Colums { get; private set; }
@@ -152,25 +153,29 @@ public class Board : MonoBehaviour
 
     public void Promote(PieceName NewName)
     {
-        Piece NewPiece = null;
-        switch (NewName)
-        {
-            case PieceName.Bishop:
-                NewPiece = Instantiate(BishopPrefab).GetComponent<Piece>();
-                break;
-            case PieceName.Queen:
-                NewPiece = Instantiate(QueenPrefab).GetComponent<Piece>();
-                break;
-            case PieceName.Rook:
-                NewPiece = Instantiate(RookPrefab).GetComponent<Piece>();
-                break;
-            case PieceName.Knight:
-                NewPiece = Instantiate(KnightPrefab).GetComponent<Piece>();
-                break;
-        }
-        NewPiece.ContainingTile = PromotingPiece.ContainingTile;
-        DestroyImmediate(PromotingPiece.gameObject);
-        PromotingPiece = null;
+        if (PromotingPiece == null)
+            return;
+        Debug.Log($"Promoted to {NewName}");
+        //Piece NewPiece = null;
+        //switch (NewName)
+        //{
+        //    case PieceName.Bishop:
+        //        NewPiece = Instantiate(BishopPrefab).GetComponent<Piece>();
+        //        break;
+        //    case PieceName.Queen:
+        //        NewPiece = Instantiate(QueenPrefab).GetComponent<Piece>();
+        //        break;
+        //    case PieceName.Rook:
+        //        NewPiece = Instantiate(RookPrefab).GetComponent<Piece>();
+        //        break;
+        //    case PieceName.Knight:
+        //        NewPiece = Instantiate(KnightPrefab).GetComponent<Piece>();
+        //        break;
+        //}
+        //NewPiece.ContainingTile = PromotingPiece.ContainingTile;
+        //DestroyImmediate(PromotingPiece.gameObject);
+        //PromotingPiece = null;
+        PromotionUI.active = false;
     }
     #endregion
 

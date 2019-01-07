@@ -132,9 +132,12 @@ public class Piece : MonoBehaviour
         List<PieceName> AllNames = new List<PieceName>();
         foreach (PieceName element in typeof(PieceName).GetEnumValues())
         {
-            AllNames.Add(element);
+            if (gameObject.name.Contains(element.ToString()))
+            {
+                return element;
+            }
         }
-        return AllNames.SingleOrDefault(e => gameObject.name.Contains(e.ToString()));
+        return PieceName.Unknown;
     }
     #endregion
 }
